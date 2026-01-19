@@ -9,12 +9,12 @@ auth.onAuthStateChanged((user) => {
   } else {
     setupLoginButton();
   }
-});
+})
 
 const setupLoginButton = () => {
   ui.start("#loginUI", {
     callbacks: {
-      signInSuccessWithAuthResult: function (authResult, redirectURL) {
+      signInSuccessWithAuthResult: function(authResult, redirectURL) {
         location.reload();
         return false;
       },
@@ -28,7 +28,7 @@ const setupLoginButton = () => {
 
 const getUserWrittenBlogs = () => {
   db.collection("blogs")
-    .where("author", "==", auth.currentUser.email.split("@")[0])
+    .where("author", "==", auth.currentUser.email.split('@')[0])
     .get()
     .then((blogs) => {
       blogs.forEach((blog) => {

@@ -14,7 +14,7 @@ bannerImage.addEventListener('change', () => {
 })
 
 uploadInput.addEventListener('change', () => {
-    uploadImage(uploadInput, "image")
+    uploadImage(uploadInput, "image");
 })
 
 const uploadImage = (uploadFile, uploadType) => {
@@ -52,7 +52,7 @@ let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc
 publishBtn.addEventListener('click', () => {
     if(articleField.value.length && blogTitleField.value.length){
         let docName;
-        if (blogID[0] == 'editor'){
+        if (blogID[0] == 'editor.html'){
              // generating id
              let letters = 'abcdefghijklmnopqrstuvwxyz';
              let blogTitle = blogTitleField.value.split(" ").join("-");
@@ -60,7 +60,7 @@ publishBtn.addEventListener('click', () => {
              for(let i = 0; i < 4; i++){
                 id += letters[Math.floor(Math.random() * letters.length)];
             }
-            let docName = `${blogTitle}-${id}`;
+            docName = `${blogTitle}-${id}`;
         } else {
             docName = decodeURI(blogID[0]);
         }
@@ -73,7 +73,7 @@ publishBtn.addEventListener('click', () => {
             article: articleField.value,
             bannerImage: bannerPath,
             publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-            author: auth.currentUser.email.split("@")[0] // return users email name
+            author: auth.currentUser.email.split("@")[0]// return users email name
         })
         .then(() => {
             location.href = `/${docName}`;
@@ -97,7 +97,7 @@ auth.onAuthStateChanged((user) => {
 let blogID = location.pathname.split("/");
 blogID.shift(); // since the first array is empty
 
-if(blogID[0] != "editor"){
+if(blogID[0] != 'editor.html'){
     // means we are in existing blog edit route
     let docRef = db.collection("blogs").doc(decodeURI(blogID[0]));
     docRef.get().then((doc) => {

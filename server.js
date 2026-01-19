@@ -31,7 +31,7 @@ app.post('/upload', (req, res) => {
     // create upload
     file.mv(path, (err, result) => {
         if(err){
-            throw err;
+             return res.status(500).json({ error: "Upload failed" });
         } else {
             // our image upload path
             res.json(`uploads/${imagename}`)
@@ -51,6 +51,11 @@ app.get("/:blog/editor", (req, res) => {
     res.sendFile(path.join(initial_path, "editor.html"));
 })
 
-app.listen("3000", () => {
-    console.log('listening......');
+app.use ((req, res) => {
+    res.json("404");
 })
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}......`);
+});
