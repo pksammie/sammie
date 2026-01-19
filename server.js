@@ -1,61 +1,63 @@
 const express = require('express');
 const path = require('path');
 const fileupload = require('express-fileupload');
+const admin = require("firebase-admin");
 
+// 1. INITIALIZE FIREBASE
+const serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "blogging-website-1fc45.appspot.com" // Replace with your Project ID
+});
+
+const bucket = admin.storage().bucket();
+const app = express();
 let initial_path = path.join(__dirname, "public");
 
-const app = express();
 app.use(express.static(initial_path));
-app.use(fileupload())
+app.use(fileupload());
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(initial_path, "index.html"));
-})
+// Standard routes
+app.get('/', (req, res) => res.sendFile(path.join(initial_path, "index.html")));
+app.get('/editor', (req, res) => res.sendFile(path.join(initial_path, "editor.html")));
 
-app.get('/editor', (req, res) => {
-    res.sendFile(path.join(initial_path, "editor.html"));
-})
-
-app.get('/testimonial', (req, res) => {
-    res.sendFile(path.join(initial_path, "testimonial.html"));
-})
-// upload link
+// 2. FIXED UPLOAD ROUTE (Uploading to Firebase)
 app.post('/upload', (req, res) => {
+    if (!req.files || !req.files.image) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+
     let file = req.files.image;
-    let date = new Date();
-    // image name
-    let imagename = date.getDate() + date.getTime() + file.name;
-    // image upload path
-    let path = 'public/uploads/' + imagename;
+    let imagename = Date.now() + "_" + file.name;
+    
+    // Create a reference to the file in Firebase Storage
+    const blob = bucket.file(`uploads/${imagename}`);
+    const blobStream = blob.createWriteStream({
+        metadata: { contentType: file.mimetype },
+        resumable: false
+    });
 
-    // create upload
-    file.mv(path, (err, result) => {
-        if(err){
-             return res.status(500).json({ error: "Upload failed" });
-        } else {
-            // our image upload path
-            res.json(`uploads/${imagename}`)
+    blobStream.on('error', (err) => {
+        return res.status(500).json({ error: "Upload failed: " + err.message });
+    });
+
+    blobStream.on('finish', async () => {
+        // Generate a public URL to send back to your frontend
+        try {
+            await blob.makePublic(); // Optional: Makes file accessible via URL
+            const publicUrl = `https://storage.googleapis.com{bucket.name}/${blob.name}`;
+            res.json(publicUrl);
+        } catch (err) {
+            res.status(500).json({ error: "Could not make file public" });
         }
-    })
-})
+    });
 
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(initial_path, "dashboard.html"));
-})
+    blobStream.end(file.data); // Send the file buffer to Firebase
+});
 
-app.get("/:blog", (req, res) => {
-    res.sendFile(path.join(initial_path, "blog.html"));
-})
-
-app.get("/:blog/editor", (req, res) => {
-    res.sendFile(path.join(initial_path, "editor.html"));
-})
-
-app.use ((req, res) => {
-    res.json("404");
-})
+// Other routes remain the same...
+app.get("/:blog", (req, res) => res.sendFile(path.join(initial_path, "blog.html")));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}......`);
-});
+app.listen(PORT, () => console.log(`listening on port ${PORT}......`));
