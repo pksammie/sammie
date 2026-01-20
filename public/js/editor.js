@@ -23,15 +23,19 @@ const uploadImage = (uploadFile, uploadType) => {
         const formdata = new FormData();
         formdata.append('image', file);
 
+        // Inside the uploadImage function, find this section:
+
         fetch('/upload', {
             method: 'post',
             body: formdata
         }).then(res => res.json())
         .then(data => {
+            // FIX IS HERE: 'data' is now the full absolute URL from Firebase
             if(uploadType == "image"){
-                addImage(data, file.name);
+                addImage(data, file.name); // data is already a full URL
             } else {
-                bannerPath = `${location.origin}/${data}`;
+                // Use 'data' directly as the full URL
+                bannerPath = data; 
                 banner.style.backgroundImage = `url("${bannerPath}")`;
             }
             
@@ -40,6 +44,7 @@ const uploadImage = (uploadFile, uploadType) => {
         alert("upload Image only");
     }
 }
+
 
 const addImage = (imagepath, alt) => {
     let curPos = articleField.selectionStart;
