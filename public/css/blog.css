@@ -39,6 +39,7 @@ body {
     height: 120px; /* Larger text area */
     font-size: 1rem;
     padding-left: 1rem;
+    padding-top: 1 rem;
 }
 
 .comment-card { 
@@ -102,7 +103,7 @@ body {
 }
 
 .comment-btn:hover {
-    background: #2d2d2d; /* Darker blue on hover */
+    background: #555555; /* Darker blue on hover */
 }
 
 .blog,

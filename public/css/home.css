@@ -104,12 +104,12 @@ body {
 }
 
 .comment-btn {
-    background: #969696; /* Distinct blue color */
+    background: #696969; /* Distinct blue color */
     color: #fff;
 }
 
 .comment-btn:hover {
-    background: #2d2d2d; /* Darker blue on hover */
+    background: #555555; /* Darker blue on hover */
 }
 
 .btn {
