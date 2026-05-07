@@ -76,3 +76,38 @@ const addArticle = (ele, data) => {
         }
     })
 }
+const commentInput = document.querySelector('#comment-input');
+const addCommentBtn = document.querySelector('#add-comment-btn');
+const commentsContainer = document.querySelector('.comments-container');
+
+addCommentBtn.addEventListener('click', () => {
+    if(commentInput.value.length) {
+        db.collection("comments").add({
+            blogId: blogId, // Links comment to this specific blog
+            comment: commentInput.value,
+            author: auth.currentUser ? auth.currentUser.email.split('@')[0] : 'Anonymous',
+            publishedAt: new Date().getTime()
+        })
+        .then(() => {
+            commentInput.value = ''; // Clear input
+        })
+        .catch(err => console.error("Error adding comment: ", err));
+    }
+});
+
+// Function to fetch and display comments
+db.collection("comments")
+    .where("blogId", "==", blogId)
+    .orderBy("publishedAt", "desc")
+    .onSnapshot((snapshot) => {
+        commentsContainer.innerHTML = ''; // Clear current display
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            commentsContainer.innerHTML += `
+                <div class="comment-card">
+                    <p class="comment-author">${data.author}</p>
+                    <p class="comment-text">${data.comment}</p>
+                </div>
+            `;
+        });
+    });

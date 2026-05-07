@@ -2,6 +2,51 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.comment-section {
+  width: 90%;
+  max-width: 800px;
+  margin: 50px auto;
+  padding-top: 20px;
+  border-top: 1px solid #d1d1d1;
+}
+.comment-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+#comment-input {
+  width: 100%;
+  height: 80px;
+  padding: 15px;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  resize: none;
+}
+.comments-container { 
+    max-height: 400px;
+    overflow-y: auto; 
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.comment-card {
+  padding: 10px;
+  border-bottom:
+  1px solid #f0f0f0;
+}
+.comment-author {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #333;
+}
+.comment-text {
+  margin-top: 5px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
 .blog,
 .article {
   position: relative;
