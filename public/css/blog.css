@@ -3,6 +3,10 @@ body {
   height: 100%;
 }
 
+.comment-author {
+  color: #3f3f3f
+}
+
 .comment-section { 
     width: 90%; 
     max-width: 800px; 
@@ -34,6 +38,10 @@ body {
 #comment-input {
     height: 120px; /* Larger text area */
     font-size: 1rem;
+}
+
+#comment-input::placeholder {
+  padding-left: 1rem;
 }
 
 .comment-card { 
@@ -94,11 +102,10 @@ body {
 .comment-btn {
     background: #2d2d2d; /* Distinct blue color */
     color: #fff;
-    transition: 0.3s;
 }
 
 .comment-btn:hover {
-    background: #1a1919; /* Darker blue on hover */
+    background: #000000; /* Darker blue on hover */
 }
 
 .blog,
