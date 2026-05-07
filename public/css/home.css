@@ -103,6 +103,15 @@ body {
   -webkit-text-stroke: 2px #fff;
 }
 
+.comment-btn {
+    background: #969696; /* Distinct blue color */
+    color: #fff;
+}
+
+.comment-btn:hover {
+    background: #2d2d2d; /* Darker blue on hover */
+}
+
 .btn {
   padding: 10px 20px;
   border-radius: 10px;
