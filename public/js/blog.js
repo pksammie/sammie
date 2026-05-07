@@ -111,13 +111,38 @@ db.collection("comments")
     .orderBy("publishedAt", "desc")
     .onSnapshot((snapshot) => {
         commentsContainer.innerHTML = ''; 
-        snapshot.forEach((doc) => {
-            let data = doc.data();
-            commentsContainer.innerHTML += `
-                <div class="comment-card">
-                    <p class="comment-author" style="font-weight:bold; color:red;">@${data.author}</p>
-                    <p class="comment-text">${data.comment}</p>
+        // Inside the onSnapshot listener in blog.js
+snapshot.forEach((doc) => {
+    let data = doc.data();
+    let commentId = doc.id;
+    let isOwner = auth.currentUser && auth.currentUser.email.split('@')[0] === data.author;
+
+    commentsContainer.innerHTML += `
+        <div class="comment-card">
+            <p class="comment-author">@${data.author}</p>
+            <p class="comment-text">${data.comment}</p>
+            
+            ${isOwner ? `
+                <button class="options-btn" onclick="toggleMenu('${commentId}')">⋮</button>
+                <div class="delete-menu" id="menu-${commentId}">
+                    <div class="delete-btn" onclick="deleteComment('${commentId}')">Delete</div>
                 </div>
-            `;
-        });
-    });
+            ` : ''}
+        </div>
+    `;
+});
+
+// Helper functions for the menu
+window.toggleMenu = (id) => {
+    let menu = document.getElementById(`menu-${id}`);
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+window.deleteComment = (id) => {
+    if(confirm("Delete this comment?")) {
+        db.collection("comments").doc(id).delete()
+        .then(() => console.log("Deleted"))
+        .catch(err => console.error(err));
+    }
+}
+});
