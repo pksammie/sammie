@@ -4,7 +4,7 @@
   position: absolute;
   top: 10px;
   text-transform: capitalize;
-  background-image: url(../uploads/1765536113317blogging-backdrop-with-laptop-msaf9d67o4r5dl74.jpg);
+  background-image: linear-gradient(to left, rgb(245, 183, 183), #e7e7e7, rgb(245, 183, 183));
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -15,17 +15,17 @@
 .home-link {
   padding-left: 10px;
   text-decoration: none;
-  color: rgba(241, 239, 239, 0.9);
+  color: #ffffff;
   font-family: "poppins", sans-serif;
 }
 
 .return-to-home-page:hover {
-  transition: 0.5s;
+  transition: .5s;
   box-shadow: 3px 6px 10px rgb(95, 66, 66);
 }
 
 .home-link:hover {
-  color: rgba(36, 35, 35, 0.9);
+  color: #0000009a;
   transition: 0.5s;
   font-family: "poppins", sans-serif;
 }
