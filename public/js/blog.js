@@ -76,36 +76,46 @@ const addArticle = (ele, data) => {
         }
     })
 }
+
 const commentInput = document.querySelector('#comment-input');
 const addCommentBtn = document.querySelector('#add-comment-btn');
 const commentsContainer = document.querySelector('.comments-container');
 
-addCommentBtn.addEventListener('click', () => {
+addCommentBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // STOP THE REFRESH
+
     if(commentInput.value.length) {
+        // Ensure blogId is defined from your earlier code
+        let currentBlogId = decodeURI(location.pathname.split("/").pop());
+
         db.collection("comments").add({
-            blogId: blogId, // Links comment to this specific blog
+            blogId: currentBlogId,
             comment: commentInput.value,
             author: auth.currentUser ? auth.currentUser.email.split('@')[0] : 'Anonymous',
             publishedAt: new Date().getTime()
         })
         .then(() => {
-            commentInput.value = ''; // Clear input
+            commentInput.value = ''; // Clear the box
+            console.log("Comment posted!");
         })
-        .catch(err => console.error("Error adding comment: ", err));
+        .catch(err => {
+            alert("Error: Check your console");
+            console.error(err);
+        });
     }
 });
 
-// Function to fetch and display comments
+// Fetch comments
 db.collection("comments")
-    .where("blogId", "==", blogId)
+    .where("blogId", "==", decodeURI(location.pathname.split("/").pop()))
     .orderBy("publishedAt", "desc")
     .onSnapshot((snapshot) => {
-        commentsContainer.innerHTML = ''; // Clear current display
+        commentsContainer.innerHTML = ''; 
         snapshot.forEach((doc) => {
             let data = doc.data();
             commentsContainer.innerHTML += `
                 <div class="comment-card">
-                    <p class="comment-author">${data.author}</p>
+                    <p class="comment-author" style="font-weight:bold; color:red;">@${data.author}</p>
                     <p class="comment-text">${data.comment}</p>
                 </div>
             `;
