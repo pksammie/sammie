@@ -17,7 +17,7 @@ const createBlog = (blog) => {
         <p class="blog-overview">${data.article.substring(0, 200) + '...'}</p>
         <div class="card-btns">
     <a href="/${blog.id}" class="btn dark">read more</a>
-    <a href="/${blog.id}#comment-section" class="btn comment-btn">comment</a>
+    <a href="/${blog.id}#comment-section" class="comment-btn">comment</a>
 </div>
     </div>
 `;
