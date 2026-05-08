@@ -15,7 +15,7 @@ admin.initializeApp({
 
 // --- ADMIN BOOTSTRAP CODE ---
 // Replace 'your-email@gmail.com' with the email you use to login
-admin.auth().getUserByEmail('your-email@gmail.com') 
+admin.auth().getUserByEmail('samsonpamilerin959@gmail.com') 
   .then((user) => {
     return admin.auth().setCustomUserClaims(user.uid, { admin: true });
   })
