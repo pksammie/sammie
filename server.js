@@ -31,6 +31,22 @@ app.get('/', (req, res) => res.sendFile(path.join(initial_path, "index.html")));
 // NEW BLOG ROUTE (Must be before /:blog)
 app.get('/editor', (req, res) => res.sendFile(path.join(initial_path, "editor.html")));
 
+// Route to list all registered users
+app.get('/admin/get-users', async (req, res) => {
+    try {
+        const listUsers = await admin.auth().listUsers();
+        res.json(listUsers.users);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+// Route to serve the admin page
+app.get('/admin-panel', (req, res) => {
+    res.sendFile(path.join(initial_path, "admin.html"));
+});
+
+
 // EDIT BLOG ROUTE (Must be before /:blog)
 app.get('/:blog/editor', (req, res) => {
     res.sendFile(path.join(initial_path, "editor.html"));

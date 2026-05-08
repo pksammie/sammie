@@ -22,3 +22,17 @@ const createBlog = (blog) => {
     </div>
     `;
 }
+// This listens for changes in your Firebase 'announcements' collection
+db.collection("announcements").doc("current").onSnapshot(doc => {
+    const data = doc.data();
+    const bar = document.getElementById('global-alert');
+    const msg = document.getElementById('alert-msg');
+    
+    if (data && data.active) {
+        bar.style.display = 'block';
+        msg.innerText = data.text;
+    } else {
+        bar.style.display = 'none';
+    }
+});
+

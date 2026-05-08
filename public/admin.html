@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SamBlog | Admin Panel</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/admin.css"> <!-- We will create this next -->
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Admin Control Center</h1>
+        
+        <!-- Section 1: Global Announcement -->
+        <div class="admin-card">
+            <h3>Update Global Alert</h3>
+            <textarea id="alert-text" placeholder="Type an announcement..."></textarea>
+            <button class="btn dark" onclick="updateAlert()">Post Alert</button>
+            <button class="btn danger" onclick="clearAlert()">Clear Alert</button>
+        </div>
+
+        <!-- Section 2: User List -->
+        <div class="admin-card">
+            <h3>Registered Users</h3>
+            <div id="user-list">Loading users...</div>
+        </div>
+    </div>
+
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <script src="/js/firebase.js"></script>
+    <script>
+        // Security: Kick out non-admins
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                user.getIdTokenResult().then(token => {
+                    if (!token.claims.admin) location.replace("/");
+                    else fetchUsers();
+                });
+            } else { location.replace("/"); }
+        });
+
+        function updateAlert() {
+            const text = document.getElementById('alert-text').value;
+            db.collection("announcements").doc("current").set({
+                text: text,
+                active: true
+            }).then(() => alert("Alert Updated!"));
+        }
+
+        function clearAlert() {
+            db.collection("announcements").doc("current").update({ active: false });
+        }
+
+        function fetchUsers() {
+            fetch('/admin/get-users').then(res => res.json()).then(users => {
+                const container = document.getElementById('user-list');
+                container.innerHTML = users.map(u => `
+                    <div class="user-item">
+                        <span>${u.email}</span>
+                        <button class="btn-sm danger" onclick="deleteUser('${u.uid}')">Ban</button>
+                    </div>
+                `).join('');
+            });
+        }
+    </script>
+</body>
+</html>
