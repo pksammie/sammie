@@ -1,7 +1,8 @@
-let blogId = decodeURI(location.pathname.split("/").filter(x => x && x !== 'editor' && x !== 'editor.html').pop());
+// Simplest way to get the ID from the URL
+let blogId = location.pathname.split("/").filter(x => x && x !== 'editor').pop();
 
-if (blogId && blogId !== 'index.html') {
-    db.collection("blogs").doc(blogId).get().then((doc) => {
+if (blogId) {
+    db.collection("blogs").doc(decodeURI(blogId)).get().then((doc) => {
         if (doc.exists) {
             setupBlog(doc.data());
         } else {
