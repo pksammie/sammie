@@ -82,25 +82,35 @@ const addCommentBtn = document.querySelector('#add-comment-btn');
 const commentsContainer = document.querySelector('.comments-container');
 
 addCommentBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // STOP THE REFRESH
+    e.preventDefault();
 
-    if(commentInput.value.length) {
-        // Ensure blogId is defined from your earlier code
+    // 1. CHECK IF USER IS LOGGED IN
+    const user = auth.currentUser;
+
+    if (!user) {
+        // If not logged in, alert them and redirect to the dashboard/login page
+        alert("You must be logged in to post a comment.");
+        location.replace("./dashboard.html"); // Adjust this path if your login is elsewhere
+        return;
+    }
+
+    // 2. PROCEED WITH POSTING IF LOGGED IN
+    if (commentInput.value.length) {
         let currentBlogId = decodeURI(location.pathname.split("/").pop());
 
         db.collection("comments").add({
             blogId: currentBlogId,
             comment: commentInput.value,
-            author: auth.currentUser ? auth.currentUser.email.split('@')[0] : 'Anonymous',
+            // Use actual user display name or email prefix
+            author: user.email.split('@')[0], 
             publishedAt: new Date().getTime()
         })
         .then(() => {
-            commentInput.value = ''; // Clear the box
+            commentInput.value = '';
             console.log("Comment posted!");
         })
         .catch(err => {
-            alert("Error: Check your console");
-            console.error(err);
+            console.error("Error adding comment: ", err);
         });
     }
 });
