@@ -1,41 +1,24 @@
-let blogId = decodeURI(location.pathname.split("/").pop());
+let blogId = decodeURI(location.pathname.split("/").filter(x => x && x !== 'editor' && x !== 'editor.html').pop());
 
-// 1. IMPORTANT: If the URL is just 'editor', don't run the blog code
-if (blogId == 'editor') {
-    // Do nothing, the server will handle sending editor.html
-} else {
-    let docRef = db.collection("blogs").doc(blogId);
-
-    docRef.get().then((doc) => {
+if (blogId && blogId !== 'index.html') {
+    db.collection("blogs").doc(blogId).get().then((doc) => {
         if (doc.exists) {
             setupBlog(doc.data());
         } else {
-            // Only redirect if document definitely doesn't exist
             location.replace("/");
         }
-    }).catch(err => {
-        console.error("Error loading blog:", err);
     });
 }
 
 const setupBlog = (data) => {
-    const banner = document.querySelector('.banner');
-    const blogTitle = document.querySelector('.title');
-    const titleTag = document.querySelector('title');
-    const publish = document.querySelector('.published');
+    document.querySelector('.banner').style.backgroundImage = `url("${data.bannerImage}")`;
+    document.querySelector('.title').innerHTML = document.querySelector('title').innerHTML = data.title;
+    document.querySelector('.published').innerHTML = `Published at - ${data.publishedAt} -- ${data.author}`;
 
-    banner.style.backgroundImage = `url("${data.bannerImage}")`;
-    titleTag.innerHTML += blogTitle.innerHTML = data.title;
-    publish.innerHTML += `Published at - ${data.publishedAt} -- ${data.author}`;
-
-    // Admin/Author Edit Button Logic
     auth.onAuthStateChanged((user) => {
         if (user) {
             user.getIdTokenResult(true).then((idTokenResult) => {
-                const isAdmin = idTokenResult.claims.admin;
-                const isAuthor = data.author === user.email.split('@')[0];
-
-                if (isAdmin || isAuthor) {
+                if (data.author === user.email.split('@')[0] || idTokenResult.claims.admin) {
                     let editBtn = document.getElementById('edit-blog-btn');
                     editBtn.style.display = "inline";
                     editBtn.href = `/${blogId}/editor`;
@@ -44,8 +27,7 @@ const setupBlog = (data) => {
         }
     });
 
-    const article = document.querySelector('.article');
-    article.innerHTML = data.article; // Renders HTML (images) properly
+    document.querySelector('.article').innerHTML = data.article;
 };
 
 // --- COMMENT LOGIC ---

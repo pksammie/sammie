@@ -20,7 +20,6 @@ const uploadImage = (uploadFile, uploadType) => {
     if (file && file.type.includes("image")) {
         const formdata = new FormData();
         formdata.append('image', file);
-
         fetch('/upload', { method: 'post', body: formdata })
             .then(res => res.json())
             .then(data => {
@@ -44,25 +43,19 @@ const addImage = (imagepath, alt) => {
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-// --- FIXED PUBLISH BUTTON ---
 publishBtn.addEventListener('click', () => {
     const user = auth.currentUser;
-    if (!user) {
-        alert("Session expired. Please login again.");
-        return location.replace("/dashboard.html");
-    }
+    if (!user) return alert("Please login first");
 
-    if (!bannerPath) return alert("You must upload a banner image!");
-    if (blogTitleField.value.length < 5) return alert("Title is too short!");
-    if (articleField.value.includes('<img') && !articleField.value.includes('src="http')) {
-        return alert("❌ Image link looks broken!");
-    }
-    if (articleField.value.length < 10) return alert("Article content is too short!");
+    if (!bannerPath) return alert("Upload a banner!");
+    if (blogTitleField.value.length < 5) return alert("Title too short!");
+    if (articleField.value.length < 10) return alert("Article too short!");
 
-    let blogPath = location.pathname.split("/").filter(x => x);
+    // FIX: Cleaner ID logic
+    let blogPath = location.pathname.split("/").filter(x => x && x !== 'editor' && x !== 'editor.html');
     let docName;
 
-    if (blogPath.length === 1 && blogPath[0] === 'editor') {
+    if (blogPath.length === 0) { // We are creating a NEW blog
         let letters = 'abcdefghijklmnopqrstuvwxyz';
         let blogTitle = blogTitleField.value.split(" ").join("-");
         let id = '';
@@ -80,36 +73,24 @@ publishBtn.addEventListener('click', () => {
         publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
         author: user.email.split("@")[0]
     }).then(() => {
-        // Successful redirect
-        location.href = `/${docName}`;
+        location.href = `/${docName}`; // REDIRECT TO BLOG
     }).catch((err) => {
         console.error(err);
         alert("Error publishing.");
     });
 });
 
-auth.onAuthStateChanged((user) => {
-    if (!user) location.replace("/dashboard.html");
-});
-
-// LOGIC FOR LOADING EXISTING DATA
-let blogPathArr = location.pathname.split("/").filter(x => x);
-
-// Check if we are in the edit mode (e.g., /blog-name/editor)
+// LOGIC FOR LOADING DATA
+let blogPathArr = location.pathname.split("/").filter(x => x && x !== 'editor.html');
 if (blogPathArr.length >= 2 && blogPathArr.includes('editor')) {
-    let actualBlogId = blogPathArr[0]; // The blog name is the first part
-    let docRef = db.collection("blogs").doc(decodeURI(actualBlogId));
-    
-    docRef.get().then((doc) => {
+    let actualBlogId = blogPathArr[0];
+    db.collection("blogs").doc(decodeURI(actualBlogId)).get().then((doc) => {
         if (doc.exists) {
             let data = doc.data();
             bannerPath = data.bannerImage;
             banner.style.backgroundImage = `url("${bannerPath}")`;
             blogTitleField.value = data.title;
             articleField.value = data.article;
-        } else {
-            location.replace("/");
         }
     });
 }
-
