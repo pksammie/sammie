@@ -85,8 +85,10 @@ auth.onAuthStateChanged((user) => {
 
 // Load existing blog data for editing
 let blogID = location.pathname.split("/");
-blogID.shift();
-if (blogID[0] != 'editor') {
+blogID.shift(); // Remove the empty first element
+
+// Only try to fetch data if the URL is NOT just '/editor'
+if (blogID[0] !== 'editor' && blogID[0] !== '') {
     let docRef = db.collection("blogs").doc(decodeURI(blogID[0]));
     docRef.get().then((doc) => {
         if (doc.exists) {
@@ -96,7 +98,9 @@ if (blogID[0] != 'editor') {
             blogTitleField.value = data.title;
             articleField.value = data.article;
         } else {
+            // Document doesn't exist, go home
             location.replace("/");
         }
     });
 }
+
