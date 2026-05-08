@@ -1,119 +1,102 @@
 const blogTitleField = document.querySelector('.title');
 const articleField = document.querySelector('.article');
 
-// banner
 const bannerImage = document.querySelector('#banner-upload');
 const banner = document.querySelector(".banner");
-let bannerPath;
+let bannerPath = "";
 
 const publishBtn = document.querySelector('.publish-btn');
 const uploadInput = document.querySelector('#image-upload');
 
-bannerImage.addEventListener('change', () => {
-    uploadImage(bannerImage, "banner");
-})
-
-uploadInput.addEventListener('change', () => {
-    uploadImage(uploadInput, "image");
-})
+bannerImage.addEventListener('change', () => uploadImage(bannerImage, "banner"));
+uploadInput.addEventListener('change', () => uploadImage(uploadInput, "image"));
 
 const uploadImage = (uploadFile, uploadType) => {
     const [file] = uploadFile.files;
-    if(file && file.type.includes("image")){
+    if (file && file.type.includes("image")) {
         const formdata = new FormData();
         formdata.append('image', file);
-
-        // Inside the uploadImage function, find this section:
 
         fetch('/upload', {
             method: 'post',
             body: formdata
         }).then(res => res.json())
         .then(data => {
-            // FIX IS HERE: 'data' is now the full absolute URL from Firebase
-            if(uploadType == "image"){
-                addImage(data, file.name); // data is already a full URL
+            if (uploadType == "image") {
+                addImage(data, file.name);
             } else {
-                // Use 'data' directly as the full URL
-                bannerPath = data; 
+                bannerPath = data;
                 banner.style.backgroundImage = `url("${bannerPath}")`;
             }
-            
-        })
+        });
     } else {
-        alert("upload Image only");
+        alert("Upload images only");
     }
-}
-
+};
 
 const addImage = (imagepath, alt) => {
     let curPos = articleField.selectionStart;
-    let textToInsert = `\r![${alt}](${imagepath})\r`;
+    // We insert a real HTML tag so it shows as a picture in the final blog
+    let textToInsert = `\n<img src="${imagepath}" class="article-image" alt="${alt}">\n`;
     articleField.value = articleField.value.slice(0, curPos) + textToInsert + articleField.value.slice(curPos);
-}
+};
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 publishBtn.addEventListener('click', () => {
-    if(articleField.value.length && blogTitleField.value.length){
-        let docName;
-        if (blogID[0] == 'editor.html'){
-             // generating id
-             let letters = 'abcdefghijklmnopqrstuvwxyz';
-             let blogTitle = blogTitleField.value.split(" ").join("-");
-             let id = '';
-             for(let i = 0; i < 4; i++){
-                id += letters[Math.floor(Math.random() * letters.length)];
-            }
-            docName = `${blogTitle}-${id}`;
-        } else {
-            docName = decodeURI(blogID[0]);
-        }
+    // NEW RULES: Validation
+    if (!bannerPath) return alert("You must upload a banner image!");
+    if (blogTitleField.value.length < 5) return alert("Title is too short!");
+    if (articleField.value.length < 10) return alert("Article content is too short!");
 
-        let date = new Date(); // for published at info
+    let blogID = location.pathname.split("/");
+    blogID.shift();
 
-        // access firestore with db variable
-        db.collection("blogs").doc(docName).set({
-            title: blogTitleField.value,
-            article: articleField.value,
-            bannerImage: bannerPath,
-            publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-            author: auth.currentUser.email.split("@")[0]// return users email name
-        })
-        .then(() => {
-            location.href = `/${docName}`;
-        })
-        .catch((err) => {
-            console.error(err);
-        })
+    let docName;
+    if (blogID[0] == 'editor') {
+        let letters = 'abcdefghijklmnopqrstuvwxyz';
+        let blogTitle = blogTitleField.value.split(" ").join("-");
+        let id = '';
+        for (let i = 0; i < 4; i++) id += letters[Math.floor(Math.random() * letters.length)];
+        docName = `${blogTitle}-${id}`;
+    } else {
+        docName = decodeURI(blogID[0]);
     }
-})
 
-// checking for user logged in or not
+    let date = new Date();
+    db.collection("blogs").doc(docName).set({
+        title: blogTitleField.value,
+        article: articleField.value,
+        bannerImage: bannerPath,
+        publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+        author: auth.currentUser.email.split("@")[0]
+    }).then(() => {
+        location.href = `/${docName}`;
+    }).catch((err) => {
+        console.error(err);
+        alert("Error publishing. Check console.");
+    });
+});
 
+// Check if user is logged in
 auth.onAuthStateChanged((user) => {
-    if(!user){
-        location.replace("./dashboard.html"); // this will re-direct non-users to admin route
-    }
-})
+    if (!user) location.replace("/dashboard.html");
+});
 
-// checking for existing blog edits
-
+// Load existing blog data for editing
 let blogID = location.pathname.split("/");
-blogID.shift(); // since the first array is empty
-
-if(blogID[0] != 'editor.html'){
-    // means we are in existing blog edit route
+blogID.shift();
+if (blogID[0] != 'editor') {
     let docRef = db.collection("blogs").doc(decodeURI(blogID[0]));
     docRef.get().then((doc) => {
-        if(doc.exists){
+        if (doc.exists) {
             let data = doc.data();
             bannerPath = data.bannerImage;
             banner.style.backgroundImage = `url("${bannerPath}")`;
             blogTitleField.value = data.title;
             articleField.value = data.article;
         } else {
-            location.replace("/"); // redirecting user to home page
+            location.replace("/");
         }
-    })
+    });
 }

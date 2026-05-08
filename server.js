@@ -56,11 +56,12 @@ app.post('/admin/delete-user', async (req, res) => {
     }
 });
 
-app.get("/:blog", (req, res) => res.sendFile(path.join(initial_path, "blog.html")));
 // This route handles editing an existing blog
 app.get('/:blog/editor', (req, res) => {
     res.sendFile(path.join(initial_path, "editor.html"));
 });
+
+app.get("/:blog", (req, res) => res.sendFile(path.join(initial_path, "blog.html")));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`listening on port ${PORT}......`));
