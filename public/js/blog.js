@@ -141,12 +141,13 @@ snapshot.forEach((doc) => {
         </div>
     `;
     auth.onAuthStateChanged((user) => {
-    if (user) {
-        // This is the code that checks for the "badge"
-        user.getIdTokenResult().then((idTokenResult) => {
-            if (idTokenResult.claims.admin) {
-                // If the badge is found, show the delete button for EVERYONE'S comments
-                console.log("I am the Boss!");
+    if(user){
+        user.getIdTokenResult().then(idTokenResult => {
+            // Show edit button if you are the AUTHOR or if you are an ADMIN
+            if(data.author == user.email.split('@')[0] || idTokenResult.claims.admin){
+                let editBtn = document.getElementById('edit-blog-btn');
+                editBtn.style.display = "inline";
+                editBtn.href = `/${blogId}/editor`;
             }
         });
     }
