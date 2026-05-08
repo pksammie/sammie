@@ -1,21 +1,22 @@
-// Show warning when entering the editor
-window.onload = () => {
-    alert("⚠️ IMPORTANT: When you upload an image, a 'link' starting with <img src=... will appear in your text. \n\nDO NOT delete or change any part of that link, or your image will not show up in the blog!");
-};
-
 let blogId = decodeURI(location.pathname.split("/").pop());
-let docRef = db.collection("blogs").doc(blogId);
 
-docRef.get().then((doc) => {
-    if (doc.exists) {
-        setupBlog(doc.data());
-    } else {
-        // Only redirect if document definitely doesn't exist
-        location.replace("/");
-    }
-}).catch(err => {
-    console.error("Error loading blog:", err);
-});
+// 1. IMPORTANT: If the URL is just 'editor', don't run the blog code
+if (blogId == 'editor') {
+    // Do nothing, the server will handle sending editor.html
+} else {
+    let docRef = db.collection("blogs").doc(blogId);
+
+    docRef.get().then((doc) => {
+        if (doc.exists) {
+            setupBlog(doc.data());
+        } else {
+            // Only redirect if document definitely doesn't exist
+            location.replace("/");
+        }
+    }).catch(err => {
+        console.error("Error loading blog:", err);
+    });
+}
 
 const setupBlog = (data) => {
     const banner = document.querySelector('.banner');
@@ -25,8 +26,7 @@ const setupBlog = (data) => {
 
     banner.style.backgroundImage = `url("${data.bannerImage}")`;
     titleTag.innerHTML += blogTitle.innerHTML = data.title;
-    publish.innerHTML += data.publishedAt;
-    publish.innerHTML += ` -- ${data.author}`;
+    publish.innerHTML += `Published at - ${data.publishedAt} -- ${data.author}`;
 
     // Admin/Author Edit Button Logic
     auth.onAuthStateChanged((user) => {
@@ -45,15 +45,10 @@ const setupBlog = (data) => {
     });
 
     const article = document.querySelector('.article');
-    addArticle(article, data.article);
+    article.innerHTML = data; // Renders HTML (images) properly
 };
 
-const addArticle = (ele, data) => {
-    // We use innerHTML directly so the <img> tags saved by the new editor render as pictures
-    ele.innerHTML = data;
-};
-
-// Comment Section Logic
+// --- COMMENT LOGIC ---
 const commentInput = document.querySelector('#comment-input');
 const addCommentBtn = document.querySelector('#add-comment-btn');
 const commentsContainer = document.querySelector('.comments-container');
@@ -84,15 +79,11 @@ db.collection("comments")
         snapshot.forEach((doc) => {
             let data = doc.data();
             let commentId = doc.id;
-            
-            // Check permissions for delete button
             let user = auth.currentUser;
             let deleteBtnHtml = '';
 
             if (user) {
-                // For simplicity in a real-time loop, we check author name directly
                 const isOwner = user.email.split('@')[0] === data.author;
-                // Note: Admin check usually happens inside getIdTokenResult
                 deleteBtnHtml = isOwner ? `<button class="options-btn" onclick="toggleMenu('${commentId}')">⋮</button>
                     <div class="delete-menu" id="menu-${commentId}"><div class="delete-btn" onclick="deleteComment('${commentId}')">Delete</div></div>` : '';
             }

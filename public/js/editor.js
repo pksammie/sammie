@@ -1,3 +1,8 @@
+// Show warning when entering the editor
+window.onload = () => {
+    alert("⚠️ IMPORTANT: When you upload an image, a 'link' starting with <img src=... will appear in your text. \n\nDO NOT delete or change any part of that link, or your image will not show up in the blog!");
+};
+
 const blogTitleField = document.querySelector('.title');
 const articleField = document.querySelector('.article');
 const bannerImage = document.querySelector('#banner-upload');
@@ -16,18 +21,16 @@ const uploadImage = (uploadFile, uploadType) => {
         const formdata = new FormData();
         formdata.append('image', file);
 
-        fetch('/upload', {
-            method: 'post',
-            body: formdata
-        }).then(res => res.json())
-        .then(data => {
-            if (uploadType == "image") {
-                addImage(data, file.name);
-            } else {
-                bannerPath = data;
-                banner.style.backgroundImage = `url("${bannerPath}")`;
-            }
-        });
+        fetch('/upload', { method: 'post', body: formdata })
+            .then(res => res.json())
+            .then(data => {
+                if (uploadType == "image") {
+                    addImage(data, file.name);
+                } else {
+                    bannerPath = data;
+                    banner.style.backgroundImage = `url("${bannerPath}")`;
+                }
+            });
     } else {
         alert("Upload images only");
     }
@@ -41,30 +44,24 @@ const addImage = (imagepath, alt) => {
 
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+// --- FIXED PUBLISH BUTTON ---
 publishBtn.addEventListener('click', () => {
-    // 1. FORCED RE-CHECK: Is the user still logged in?
-    auth.onAuthStateChanged((user) => {
-        if (!user) {
-            alert("Your session expired. Please login again before publishing.");
-            return location.replace("/dashboard.html");
-        }
-        
-    // 1. Existing Validations
-    if (!bannerPath) return alert("You must upload a banner image!");
-    if (blogTitleField.value.length < 5) return alert("Title is too short!");
-    
-    // 2. NEW Safety Check: Ensure image tags aren't broken
-    // This checks if they accidentally typed inside the <img > tag
-    if (articleField.value.includes('<img') && !articleField.value.includes('src="https://cloudinary.com')) {
-        return alert("❌ One of your image links looks broken. Please make sure you didn't delete the 'https' or any other part of the image source upload!");
+    const user = auth.currentUser;
+    if (!user) {
+        alert("Session expired. Please login again.");
+        return location.replace("/dashboard.html");
     }
 
+    if (!bannerPath) return alert("You must upload a banner image!");
+    if (blogTitleField.value.length < 5) return alert("Title is too short!");
+    if (articleField.value.includes('<img') && !articleField.value.includes('src="http')) {
+        return alert("❌ Image link looks broken!");
+    }
     if (articleField.value.length < 10) return alert("Article content is too short!");
 
     let blogPath = location.pathname.split("/").filter(x => x);
     let docName;
 
-    // Check if we are creating a new blog or editing
     if (blogPath.length === 1 && blogPath[0] === 'editor') {
         let letters = 'abcdefghijklmnopqrstuvwxyz';
         let blogTitle = blogTitleField.value.split(" ").join("-");
@@ -81,23 +78,22 @@ publishBtn.addEventListener('click', () => {
         article: articleField.value,
         bannerImage: bannerPath,
         publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-        author: auth.currentUser.email.split("@")[0]
+        author: user.email.split("@")[0]
     }).then(() => {
+        // Successful redirect
         location.href = `/${docName}`;
     }).catch((err) => {
         console.error(err);
         alert("Error publishing.");
     });
 });
-});
 
 auth.onAuthStateChanged((user) => {
     if (!user) location.replace("/dashboard.html");
 });
 
-// LOGIC FOR EDITING
+// LOGIC FOR LOADING EXISTING DATA
 let blogPath = location.pathname.split("/").filter(x => x);
-// Only fetch if URL is /BLOG-ID/editor (length of 2)
 if (blogPath.length === 2 && blogPath[1] === 'editor') {
     let actualBlogId = blogPath[0];
     let docRef = db.collection("blogs").doc(decodeURI(actualBlogId));
