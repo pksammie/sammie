@@ -64,3 +64,15 @@ app.get('/:blog/editor', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`listening on port ${PORT}......`));
+// This is the "Booster" function
+const makeMeAdmin = async () => {
+    try {
+        const user = await admin.auth().getUserByEmail('pksammie@gmail.com'); // Put your email here!
+        await admin.auth().setCustomUserClaims(user.uid, { admin: true });
+        console.log("BOOSTER: You are now officially an ADMIN in the database!");
+    } catch (err) {
+        console.log("BOOSTER ERROR:", err.message);
+    }
+}
+
+makeMeAdmin(); // This runs the function when the server starts
