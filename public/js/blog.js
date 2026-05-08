@@ -142,6 +142,17 @@ snapshot.forEach((doc) => {
     `;
 });
 
+// In the comment loop of blog.js
+auth.currentUser.getIdTokenResult().then((idTokenResult) => {
+    const isAdmin = !!idTokenResult.claims.admin;
+    const isOwner = auth.currentUser.email.split('@')[0] === data.author;
+
+    if (isAdmin || isOwner) {
+        // Show the three-dots and delete button
+        commentsContainer.innerHTML += `... (your delete button HTML) ...`;
+    }
+});
+
 // Helper functions for the menu
 window.toggleMenu = (id) => {
     let menu = document.getElementById(`menu-${id}`);

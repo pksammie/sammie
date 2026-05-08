@@ -43,6 +43,19 @@ app.post('/upload', (req, res) => {
     }).end(file.data);
 });
 
+app.post('/admin/delete-user', async (req, res) => {
+    const { targetUid, adminUid } = req.body;
+    
+    // Security check: Verify the person asking is actually an admin
+    const adminUser = await admin.auth().getUser(adminUid);
+    if (adminUser.customClaims && adminUser.customClaims.admin) {
+        await admin.auth().deleteUser(targetUid);
+        res.json({ message: "User removed successfully" });
+    } else {
+        res.status(403).send("Unauthorized");
+    }
+});
+
 app.get("/:blog", (req, res) => res.sendFile(path.join(initial_path, "blog.html")));
 // This route handles editing an existing blog
 app.get('/:blog/editor', (req, res) => {
