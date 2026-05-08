@@ -13,6 +13,21 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+// --- ADMIN BOOTSTRAP CODE ---
+// Replace 'your-email@gmail.com' with the email you use to login
+admin.auth().getUserByEmail('your-email@gmail.com') 
+  .then((user) => {
+    return admin.auth().setCustomUserClaims(user.uid, { admin: true });
+  })
+  .then(() => {
+    console.log("SUCCESS: You are now an admin!");
+  })
+  .catch(error => {
+    console.log("Admin error:", error);
+  });
+// ----------------------------
+
+
 // 2. Configure Cloudinary (Free Image Hosting)
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
