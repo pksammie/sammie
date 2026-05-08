@@ -71,7 +71,7 @@ publishBtn.addEventListener('click', () => {
         article: articleField.value,
         bannerImage: bannerPath,
         publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-        author: user.email.split("@")[0]
+        author: auth.currentUser.email.split("@")[0]
     }).then(() => {
         location.href = `/${docName}`; // REDIRECT TO BLOG
     }).catch((err) => {
