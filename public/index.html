@@ -67,14 +67,15 @@
       }
     </script>
 
-    <!-- 1. THE SDKs (Load these first from Google's CDN) -->
+    <!-- index.html bottom -->
+<!-- Use these official links exactly -->
 <script src="https://gstatic.com"></script>
 <script src="https://gstatic.com"></script>
 <script src="https://gstatic.com"></script>
 
-    <!-- FIXED: Added / before js -->
-    <script src="/js/firebase.js"></script>
-    <script src="/js/nav.js"></script>
-    <script src="/js/home.js"></script>
+<!-- Add a 'defer' tag - this tells the browser to wait until everything is ready -->
+<script src="/js/firebase.js" defer></script>
+<script src="/js/nav.js" defer></script>
+<script src="/js/home.js" defer></script>>
   </body>
 </html>
