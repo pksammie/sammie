@@ -140,6 +140,18 @@ snapshot.forEach((doc) => {
             ` : ''}
         </div>
     `;
+    auth.onAuthStateChanged((user) => {
+    if (user) {
+        // This is the code that checks for the "badge"
+        user.getIdTokenResult().then((idTokenResult) => {
+            if (idTokenResult.claims.admin) {
+                // If the badge is found, show the delete button for EVERYONE'S comments
+                console.log("I am the Boss!");
+            }
+        });
+    }
+});
+
 });
 
 // In the comment loop of blog.js
