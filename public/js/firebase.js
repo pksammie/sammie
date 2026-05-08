@@ -9,8 +9,8 @@ let firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-let db = firebase.firestore();
-let auth = firebase.auth();
+var db = firebase.firestore();
+var auth = firebase.auth();
 
 const logoutUser = () => {
   auth.signOut();
