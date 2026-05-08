@@ -45,7 +45,7 @@ const setupBlog = (data) => {
     });
 
     const article = document.querySelector('.article');
-    article.innerHTML = data; // Renders HTML (images) properly
+    article.innerHTML = data.article; // Renders HTML (images) properly
 };
 
 // --- COMMENT LOGIC ---

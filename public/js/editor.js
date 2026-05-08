@@ -93,10 +93,13 @@ auth.onAuthStateChanged((user) => {
 });
 
 // LOGIC FOR LOADING EXISTING DATA
-let blogPath = location.pathname.split("/").filter(x => x);
-if (blogPath.length === 2 && blogPath[1] === 'editor') {
-    let actualBlogId = blogPath[0];
+let blogPathArr = location.pathname.split("/").filter(x => x);
+
+// Check if we are in the edit mode (e.g., /blog-name/editor)
+if (blogPathArr.length >= 2 && blogPathArr.includes('editor')) {
+    let actualBlogId = blogPathArr[0]; // The blog name is the first part
     let docRef = db.collection("blogs").doc(decodeURI(actualBlogId));
+    
     docRef.get().then((doc) => {
         if (doc.exists) {
             let data = doc.data();
@@ -109,3 +112,4 @@ if (blogPath.length === 2 && blogPath[1] === 'editor') {
         }
     });
 }
+
