@@ -1,7 +1,7 @@
 let blogId = decodeURI(location.pathname.split("/").pop());
 let docRef = db.collection("blogs").doc(blogId);
 
-// 1. FETCH BLOG DATA
+// 1. FETCH AND SETUP BLOG DATA
 docRef.get().then((doc) => {
     if (doc.exists) {
         setupBlog(doc.data());
@@ -21,7 +21,7 @@ const setupBlog = (data) => {
     publish.innerHTML += data.publishedAt;
     publish.innerHTML += ` -- ${data.author}`;
 
-    // 2. CHECK FOR EDIT PERMISSIONS (ADMIN OR AUTHOR)
+    // 2. CHECK FOR EDIT PERMISSIONS (AUTHOR OR ADMIN)
     auth.onAuthStateChanged((user) => {
         if (user) {
             user.getIdTokenResult(true).then((idTokenResult) => {
@@ -45,7 +45,8 @@ const addArticle = (ele, data) => {
     data = data.split("\n").filter(item => item.length);
     data.forEach(item => {
         if (item[0] == '#') {
-            let hCount = 0, i = 0;
+            let hCount = 0;
+            let i = 0;
             while (item[i] == '#') { hCount++; i++; }
             let tag = `h${hCount}`;
             ele.innerHTML += `<${tag}>${item.slice(hCount, item.length)}</${tag}>`;
@@ -65,7 +66,7 @@ const addArticle = (ele, data) => {
     });
 };
 
-// 3. COMMENT LOGIC
+// 3. COMMENT SECTION LOGIC
 const commentInput = document.querySelector('#comment-input');
 const addCommentBtn = document.querySelector('#add-comment-btn');
 const commentsContainer = document.querySelector('.comments-container');
@@ -73,6 +74,7 @@ const commentsContainer = document.querySelector('.comments-container');
 addCommentBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const user = auth.currentUser;
+
     if (!user) {
         alert("You must be logged in to post a comment.");
         location.replace("./dashboard.html");
@@ -93,41 +95,43 @@ addCommentBtn.addEventListener('click', (e) => {
     }
 });
 
-// 4. FETCH AND DISPLAY COMMENTS (WITH DELETE BUTTON FOR OWNER/ADMIN)
+// 4. FETCH AND DISPLAY COMMENTS (WITH ADMIN/OWNER DELETE)
 db.collection("comments")
     .where("blogId", "==", blogId)
     .orderBy("publishedAt", "desc")
     .onSnapshot((snapshot) => {
-        commentsContainer.innerHTML = ''; 
+        commentsContainer.innerHTML = '';
         snapshot.forEach((doc) => {
             let data = doc.data();
             let commentId = doc.id;
-            
-            // Check if current user can delete this comment
+
             auth.onAuthStateChanged((user) => {
-                if(user){
+                let deleteBtnHtml = '';
+                
+                if (user) {
                     user.getIdTokenResult().then(idTokenResult => {
                         const isAdmin = idTokenResult.claims.admin;
                         const isOwner = user.email.split('@')[0] === data.author;
 
-                        let deleteBtnHtml = (isAdmin || isOwner) ? `
-                            <button class="options-btn" onclick="toggleMenu('${commentId}')">⋮</button>
-                            <div class="delete-menu" id="menu-${commentId}">
-                                <div class="delete-btn" onclick="deleteComment('${commentId}')">Delete</div>
-                            </div>
-                        ` : '';
+                        if (isAdmin || isOwner) {
+                            deleteBtnHtml = `
+                                <button class="options-btn" onclick="toggleMenu('${commentId}')">⋮</button>
+                                <div class="delete-menu" id="menu-${commentId}">
+                                    <div class="delete-btn" onclick="deleteComment('${commentId}')">Delete</div>
+                                </div>
+                            `;
+                        }
 
-                        let commentHtml = `
+                        commentsContainer.innerHTML += `
                             <div class="comment-card">
                                 <p class="comment-author">@${data.author}</p>
                                 <p class="comment-text">${data.comment}</p>
                                 ${deleteBtnHtml}
                             </div>
                         `;
-                        commentsContainer.innerHTML += commentHtml;
                     });
                 } else {
-                    // Public view of comments
+                    // Show comments to guests without delete buttons
                     commentsContainer.innerHTML += `
                         <div class="comment-card">
                             <p class="comment-author">@${data.author}</p>
@@ -139,16 +143,16 @@ db.collection("comments")
         });
     });
 
-// Helper functions for menu
+// 5. HELPER FUNCTIONS FOR DELETE MENU
 window.toggleMenu = (id) => {
     let menu = document.getElementById(`menu-${id}`);
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 };
 
 window.deleteComment = (id) => {
-    if (confirm("Delete this comment?")) {
+    if (confirm("Are you sure you want to delete this comment?")) {
         db.collection("comments").doc(id).delete()
-            .then(() => console.log("Deleted"))
-            .catch(err => console.error(err));
+            .then(() => console.log("Comment deleted"))
+            .catch(err => console.error("Delete failed: ", err));
     }
 };
