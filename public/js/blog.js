@@ -1,3 +1,8 @@
+// Show warning when entering the editor
+window.onload = () => {
+    alert("⚠️ IMPORTANT: When you upload an image, a 'link' starting with <img src=... will appear in your text. \n\nDO NOT delete or change any part of that link, or your image will not show up in the blog!");
+};
+
 let blogId = decodeURI(location.pathname.split("/").pop());
 let docRef = db.collection("blogs").doc(blogId);
 
