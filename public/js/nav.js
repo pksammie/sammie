@@ -1,19 +1,23 @@
-let ul = document.querySelector('.links-container');
-let ur = document.querySelector('.responsive-side-bar');
-
 auth.onAuthStateChanged((user) => {
-    // We clear the innerHTML first to prevent buttons from doubling up
-    let links = '';
-    if(user){
-        links = `
-            <li class="link-item"><a href="/dashboard.html" class="link">Dashboard</a></li>
-            <li class="link-item"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
-        `;
-    } else {
-        links = `<li class="link-item"><a href="/dashboard.html" class="link">Login</a></li>`;
-    }
+    let ul = document.querySelector('.links-container');
     
-    // Check if elements exist before adding (prevents errors on different pages)
-    if(ul) ul.innerHTML += links;
-    if(ur) ur.innerHTML += links.replace(/link-item/g, 'links-item');
+    if (user) {
+        // 1. First, check for the Admin Badge
+        user.getIdTokenResult().then(idTokenResult => {
+            let links = `
+                <li class="link-item"><a href="/dashboard.html" class="link">Dashboard</a></li>
+                <li class="link-item"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
+            `;
+
+            // 2. IF ADMIN: Add the Admin Panel link in RED
+            if (idTokenResult.claims.admin) {
+                links += `<li class="link-item"><a href="/admin-panel" class="link" style="color: red; font-weight: bold;">Admin</a></li>`;
+            }
+
+            ul.innerHTML = links; // Update the menu
+        });
+    } else {
+        // User not logged in
+        ul.innerHTML = `<li class="link-item"><a href="/dashboard.html" class="link">Login</a></li>`;
+    }
 });

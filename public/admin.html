@@ -31,14 +31,24 @@
     <script src="/js/firebase.js"></script>
     <script>
         // Security: Kick out non-admins
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                user.getIdTokenResult().then(token => {
-                    if (!token.claims.admin) location.replace("/");
-                    else fetchUsers();
-                });
-            } else { location.replace("/"); }
+        // Inside admin.html script
+auth.onAuthStateChanged(user => {
+    if (user) {
+        // Force refresh the token to check for the admin "badge"
+        user.getIdTokenResult(true).then(idTokenResult => {
+            if (idTokenResult.claims.admin) {
+                console.log("Welcome, Admin");
+                fetchUsers(); // Only run this if they ARE an admin
+            } else {
+                alert("Access Denied: Admins Only");
+                location.replace("/"); // Kick them to homepage
+            }
         });
+    } else {
+        location.replace("/dashboard.html"); // Not logged in? Go to login
+    }
+});
+
 
         function updateAlert() {
             const text = document.getElementById('alert-text').value;
