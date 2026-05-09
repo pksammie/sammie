@@ -235,7 +235,7 @@ body {
 }
 @media (max-width: 431px) {
   .banner {
-    width: 100%;
+    width: 103%;
     height: 400px;
     position: relative;
     background: #e7e7e7;
@@ -291,7 +291,7 @@ body {
   }
   .title,
   .article {
-    width: 100%;
+    width: 180%;
   }
   .blogs-section {
     word-break: break-word;
@@ -306,7 +306,7 @@ body {
 }
 @media (max-width: 431px) {
   .banner {
-    width: 100%;
+    width: 103%;
     height: 400px;
     position: relative;
     background: #e7e7e7;
@@ -370,7 +370,7 @@ body {
   }
   .title,
   .article {
-    width: 100%;
+    width: 180%;
   }
   .blogs-section {
     word-break: break-word;
@@ -408,7 +408,7 @@ body {
   }
   .title,
   .article {
-    width: 100%;
+    width: 170%;
   }
   .blogs-section {
     word-break: break-word;
@@ -473,7 +473,7 @@ body {
   }
   .title,
   .article {
-    width: 100%;
+    width: 170%;
   }
   .blogs-section {
     word-break: break-word;

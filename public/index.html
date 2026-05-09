@@ -62,10 +62,13 @@
 
     <script>
       function showSidebar() {
-        document.querySelector(".links-container").style.display = "flex";
+        const sidebar = document.querySelector(".responsive-side-bar");
+        sidebar.style.display = "flex";
       }
+
       function hideSidebar() {
-        document.querySelector(".responsive-side-bar").style.display = "none";
+        const sidebar = document.querySelector(".responsive-side-bar");
+        sidebar.style.display = "none";
       }
     </script>
 
