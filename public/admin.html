@@ -31,54 +31,58 @@
 
     <script>
         auth.onAuthStateChanged(user => {
-            if (user) {
-                user.getIdTokenResult(true).then(idTokenResult => {
-                    if (idTokenResult.claims.admin) {
-                        fetchUsers();
-                    } else {
-                        alert("Access Denied");
-                        location.replace("/");
-                    }
-                });
+    if (user) {
+        user.getIdTokenResult(true).then(idTokenResult => {
+            if (idTokenResult.claims.admin) {
+                fetchUsers();
             } else {
-                location.replace("/dashboard.html");
+                alert("Access Denied");
+                location.replace("/");
             }
         });
+    } else {
+        location.replace("/dashboard.html");
+    }
+});
 
-        function updateAlert() {
-            const text = document.getElementById('alert-text').value;
-            db.collection("announcements").doc("current").set({
-                text: text,
-                active: true
-            }).then(() => alert("Alert Updated!"));
-        }
+// Use the window object to make sure HTML buttons can always find these
+window.updateAlert = () => {
+    const text = document.getElementById('alert-text').value;
+    if(!text) return alert("Please type something first!");
+    
+    db.collection("announcements").doc("current").set({
+        text: text,
+        active: true
+    }).then(() => alert("Alert Updated!"))
+    .catch(err => alert("Error: " + err.message));
+}
 
-        function clearAlert() {
-            db.collection("announcements").doc("current").update({ active: false });
-        }
+window.clearAlert = () => {
+    db.collection("announcements").doc("current").update({ active: false })
+    .then(() => alert("Alert Cleared!"));
+}
 
-        function fetchUsers() {
-            fetch('/admin/get-users').then(res => res.json()).then(users => {
-                const container = document.getElementById('user-list');
-                container.innerHTML = users.map(u => `
-                    <div class="user-item">
-                        <span>${u.email}</span>
-                        <button class="btn-sm danger" onclick="deleteUser('${u.uid}')">Remove</button>
-                    </div>
-                `).join('');
-            });
-        }
+function fetchUsers() {
+    fetch('/admin/get-users').then(res => res.json()).then(users => {
+        const container = document.getElementById('user-list');
+        container.innerHTML = users.map(u => `
+            <div class="user-item">
+                <span>${u.email}</span>
+                <button class="btn-sm danger" onclick="deleteUser('${u.uid}')">Remove</button>
+            </div>
+        `).join('');
+    });
+}
 
-        function deleteUser(uid) {
-            if(confirm("Are you sure? This deletes the account forever.")){
-                // Call your server route
-                fetch('/admin/delete-user', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ targetUid: uid, adminUid: auth.currentUser.uid })
-                }).then(() => fetchUsers());
-            }
-        }
+window.deleteUser = (uid) => {
+    if(confirm("Are you sure?")){
+        fetch('/admin/delete-user', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ targetUid: uid, adminUid: auth.currentUser.uid })
+        }).then(() => fetchUsers());
+    }
+}
     </script>
 </body>
 </html>
