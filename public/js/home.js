@@ -14,11 +14,14 @@ db.collection("blogs").get().then((blogs) => {
 
 const createBlog = (blog) => {
     let data = blog.data();
+    // FIX: Remove image code from the overview text so it doesn't show raw links
+    let cleanArticle = data.article.replace(/<img[^>]*>/g, ""); 
+
     blogSection.innerHTML += `
     <div class="blog-card">
         <img src="${data.bannerImage}" class="blog-image" alt="">
-        <h1 class="blog-title">${data.title.substring(0, 100) + '...'}</h1>
-        <p class="blog-overview">${data.article.substring(0, 200) + '...'}</p>
+        <h1 class="blog-title">${data.title.substring(0, 50)}...</h1>
+        <p class="blog-overview">${cleanArticle}</p>
         <div class="card-btns">
             <a href="/${blog.id}" class="btn dark">read more</a>
             <a href="/${blog.id}#comment-section" class="comment-btn">comment</a>
