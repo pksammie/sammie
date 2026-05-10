@@ -1,23 +1,24 @@
 auth.onAuthStateChanged((user) => {
     let ul = document.querySelector('.links-container');
+    let ur = document.querySelector('.responsive-side-bar');
     
+    // Remove only existing dynamic links to prevent duplicates
+    document.querySelectorAll('.dynamic-auth-link').forEach(el => el.remove());
+
     if (user) {
-        // 1. First, check for the Admin Badge
-        user.getIdTokenResult().then(idTokenResult => {
+        user.getIdTokenResult(true).then(idTokenResult => {
             let links = `
-                <li class="link-item"><a href="/dashboard.html" class="link">Dashboard</a></li>
-                <li class="link-item"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
+                <li class="link-item dynamic-auth-link"><a href="/dashboard.html" class="link">Dashboard</a></li>
+                <li class="link-item dynamic-auth-link"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
             `;
-
-            // 2. IF ADMIN: Add the Admin Panel link in RED
             if (idTokenResult.claims.admin) {
-                links += `<li class="link-item"><a href="/admin-panel" class="link" style="color: red; font-weight: bold;">Admin</a></li>`;
+                links += `<li class="link-item dynamic-auth-link"><a href="/admin-panel" class="link" style="color: red; font-weight: bold;">Admin</a></li>`;
             }
-
-            ul.innerHTML = links; // Update the menu
+            // Adds links WITHOUT deleting the menu button
+            ul.insertAdjacentHTML('beforeend', links);
+            if(ur) ur.innerHTML = links.replace(/link-item/g, 'links-item');
         });
     } else {
-        // User not logged in
-        ul.innerHTML = `<li class="link-item"><a href="/dashboard.html" class="link">Login</a></li>`;
+        ul.insertAdjacentHTML('beforeend', `<li class="link-item dynamic-auth-link"><a href="/dashboard.html" class="link">Login</a></li>`);
     }
 });
