@@ -1,32 +1,21 @@
 auth.onAuthStateChanged((user) => {
     let ul = document.querySelector('.links-container');
-    let ur = document.querySelector('.responsive-side-bar');
     
-    // 1. Clear only dynamic auth links to prevent doubling
-    document.querySelectorAll('.auth-link').forEach(el => el.remove());
-
-    let links = '';
+    // Clear only old login links to prevent doubling
+    document.querySelectorAll('.dynamic-link').forEach(el => el.remove());
 
     if (user) {
         user.getIdTokenResult(true).then(idTokenResult => {
-            links = `
-                <li class="link-item auth-link"><a href="/dashboard.html" class="link">Dashboard</a></li>
-                <li class="link-item auth-link"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
+            let links = `
+                <li class="link-item dynamic-link"><a href="/dashboard.html" class="link">Dashboard</a></li>
+                <li class="link-item dynamic-link"><a href="#" onclick="logoutUser()" class="link">Logout</a></li>
             `;
-
             if (idTokenResult.claims.admin) {
-                links += `<li class="link-item auth-link"><a href="/admin-panel" class="link" style="color: red; font-weight: bold;">Admin</a></li>`;
+                links += `<li class="link-item dynamic-link"><a href="/admin-panel" class="link" style="color: red;">Admin</a></li>`;
             }
-
-            // ADD TO DESKTOP NAVBAR (Before the menu button)
-            ul.insertAdjacentHTML('afterbegin', links);
-            
-            // ADD TO MOBILE SIDEBAR
-            if(ur) ur.innerHTML += links.replace(/link-item/g, 'links-item');
+            ul.insertAdjacentHTML('afterbegin', links); // Keeps your Menu Button safe at the end
         });
     } else {
-        links = `<li class="link-item auth-link"><a href="/dashboard.html" class="link">Login</a></li>`;
-        ul.insertAdjacentHTML('afterbegin', links);
-        if(ur) ur.innerHTML += links.replace(/link-item/g, 'links-item');
+        ul.insertAdjacentHTML('afterbegin', `<li class="link-item dynamic-link"><a href="/dashboard.html" class="link">Login</a></li>`);
     }
 });

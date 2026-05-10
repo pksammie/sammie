@@ -1,18 +1,17 @@
-/* --- UNIVERSAL RESET --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box !important;
 }
 
-html, body {
+body {
   width: 100%;
-  overflow-x: hidden; /* STOPS THE SLIDING */
+  overflow-x: hidden; /* STOPS SLIDING */
   position: relative;
   font-family: "poppins", sans-serif;
 }
 
-/* --- GLOBAL ALERT --- */
+/* --- YOUR ALERT BAR --- */
 #global-alert {
     display: none; 
     background: #ff4d4d;
@@ -20,15 +19,15 @@ html, body {
     padding: 15px;
     text-align: center;
     width: 100%;
-    position: relative; 
+    position: relative;
     z-index: 1001;
 }
 
-/* --- NAVBAR (Changed to sticky so Alert can push it down) --- */
+/* --- YOUR NAVBAR --- */
 .navbar {
   width: 100%;
   height: 80px;
-  position: sticky; /* FIXED: Now sits BELOW the alert if alert is active */
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;
@@ -36,28 +35,15 @@ html, body {
   align-items: center;
   padding: 0 5vw;
   background: #fff;
-  z-index: 1000;
-  border-bottom: 1px solid #f0f0f0;
+  z-index: 9;
 }
 
-.logo { width: 155px; height: 65px; object-fit: contain; }
-
-.links-container { display: flex; list-style: none; align-items: center; }
-
-.link {
-  padding: 10px;
-  margin-left: 10px;
-  text-decoration: none;
-  text-transform: capitalize;
-  color: #000;
-  opacity: 0.7;
-}
-
-/* --- HEADER / WALLPAPER --- */
+/* --- YOUR HEADER (RESTORED EXACTLY) --- */
 .header {
+  margin-top: 60px;
   width: 100%;
-  height: 80vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../img/blogging-backdrop-with-laptop-msaf9d67o4r5dl74.jpg);
+  height: calc(100vh - 60px);
+  background-image: linear-gradient(rgba(236, 227, 227, 0.5), rgba(236, 227, 227, 0.5)), url(../img/blogging-backdrop-with-laptop-msaf9d67o4r5dl74.jpg);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -65,33 +51,51 @@ html, body {
   align-items: center;
 }
 
-.heading { color: #fff; text-align: center; font-size: 60px; line-height: 1; }
-.heading .small { display: block; font-size: 30px; }
-
-/* --- BLOGS SECTION (FIXED: Added space from wallpaper) --- */
-.blogs-section {
-    margin-top: 100px !important; 
-    padding: 50px 5vw;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 60px;
+/* --- YOUR BUTTONS (RESTORED EXACTLY) --- */
+.btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #000;
+  text-decoration: none;
+  text-transform: capitalize;
 }
 
-.blog-image {
-  width: 100% !important;
-  height: 250px;
-  object-fit: cover;
+.comment-btn {
+  background: #969696;
+  color: #fff;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding: 10px 20px;
   border-radius: 10px;
 }
 
-/* --- RESPONSIVE FIX --- */
+.comment-btn:hover { background: #555555; }
+
+.btn.dark { background: #1b1b1b; color: #fff; }
+
+/* --- YOUR BLOG SECTION --- */
+.blogs-section {
+  word-break: break-word;
+  width: 100%;
+  padding: 50px 5vw;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 80px;
+}
+
+.blog-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* --- MOBILE MENU FIX --- */
 @media (max-width: 768px) {
-    .menu-button { display: block !important; margin-left: 20px; cursor: pointer; }
-    .menu-button svg { width: 30px; height: 30px; display: block; }
-    .links-container { display: none; }
-    .responsive-side-bar { 
-        position: fixed; top: 0; right: 0; width: 280px; height: 100vh; 
-        background: #fff; z-index: 2000; padding: 40px; display: none; 
-        flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    }
+    .menu-button { display: block !important; }
+    .link-item:not(.menu-button) { display: none; }
+    .blogs-section { grid-template-columns: 1fr; padding: 20px; }
+    .blog-image { width: 100% !important; } /* Fix for the expanding picture */
 }
