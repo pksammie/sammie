@@ -154,6 +154,44 @@ html, body {
     border-radius: 8px;
 }
 
+/* --- SIDEBAR STYLING RESTORED --- */
+.responsive-side-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background: #fff;
+    z-index: 2000;
+    display: none; /* Controlled by showSidebar() */
+    flex-direction: column;
+    padding: 50px 30px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+
+.links-item {
+    list-style: none;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.links-item .link {
+    font-size: 1.2rem;
+    color: #000;
+    opacity: 1;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+/* Close Button Styling inside Sidebar */
+.responsive-side-bar svg {
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+
 .sub-heading {
   padding: 0 5vw;
   color: #2d2d2d;
@@ -225,8 +263,8 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .heading .small { font-size: 24px !important; }
 
     .published {
-  margin: 20px 0 60px;
-  padding: 0 5px;
+  margin: 20px 0 40px;
+  padding: 0 10px;
   text-transform: capitalize;
   font-style: italic;
   color: rgba(0, 0, 0, 0.5);
