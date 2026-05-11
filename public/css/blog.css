@@ -243,6 +243,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .article {
         padding-bottom: 20px !important;
         word-break: break-word !important;
+        padding-top: 30px;
     }
     .published { width: 100% !important; margin-left: 0 !important; }
 
