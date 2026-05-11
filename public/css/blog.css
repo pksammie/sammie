@@ -199,11 +199,12 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
         font-size: 28px !important; 
         line-height: 1.2 !important; 
         margin-left: 0 !important;
+        margin-top: 10px;
     }
 
     .article {
-        padding-bottom: 10px;
-        word-break: break-all;
+        padding-bottom: 20px !important;
+        word-break: break-word !important;
     }
     .published { width: 100% !important; margin-left: 0 !important; }
 
@@ -215,7 +216,8 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 
     .blog-overview {
   margin: 10px 0 20px;
-  line-height: 10px;
+  line-height: 20px;
+  overflow-y: 20px;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
@@ -228,7 +230,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 }
 .comment-title {
     padding-top: 5px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 .sub-heading {
   padding: 0 5vw;
@@ -236,5 +238,6 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   font-weight: 500;
   font-size: 30px;
   margin-top: 80px;
+  padding-bottom: 10px;
 }
 }

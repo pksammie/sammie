@@ -150,6 +150,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 80px;
+  overflow-y: 30px;
 }
 
 .blog-image {
@@ -161,7 +162,8 @@ body {
 }
 .blog-overview {
   margin: 10px 0 20px;
-  line-height: 20px;
+  line-height: 30px;
+  overflow-y: 30px;
 }
 .btn.dark {
   background: #1b1b1b;
@@ -214,9 +216,20 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     
     .blog-overview {
   margin: 10px 0 20px;
-  line-height: 10px;
+  line-height: 20px;
+  overflow-y: 20px;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
+
+    .blogs-section {
+  word-break: break-word;
+  width: 100%;
+  padding: 70px 5vw;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 80px;
+  overflow-y: 30px;
+}
 }
