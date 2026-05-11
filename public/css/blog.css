@@ -217,16 +217,24 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .blog-overview {
   margin: 10px 0 20px;
   line-height: 20px;
-  overflow-y: 20px;
+  overflow-y: hidden;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
 
+    .published {
+  margin: 10px 0 60px;
+  padding: 0 10px;
+  text-transform: capitalize;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+}
+
     #edit-blog-btn {
   background: rgba(0, 0, 0, 0.2);
   display: none;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 .comment-title {
     padding-top: 5px;
@@ -238,6 +246,6 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   font-weight: 500;
   font-size: 30px;
   margin-top: 80px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 }
