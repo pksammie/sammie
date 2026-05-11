@@ -273,7 +273,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     #edit-blog-btn {
   background: rgba(0, 0, 0, 0.2);
   display: none;
-  margin-bottom: 20px;
+  padding-bottom: 50px;
 }
 .comment-title {
     padding-top: 5px;
