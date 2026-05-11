@@ -218,7 +218,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   margin: 10px 0 20px;
   line-height: 20px;
   overflow: hidden;
-  height: 20px;
+  height: 30px;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
@@ -226,7 +226,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 
     .published {
   margin: 20px 0 60px;
-  padding: 0 10px;
+  padding: 0 5px;
   text-transform: capitalize;
   font-style: italic;
   color: rgba(0, 0, 0, 0.5);

@@ -217,7 +217,12 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .blog-overview {
   margin: 10px 0 20px;
   line-height: 20px;
-  overflow-y: hidden;
+  overflow: hidden;
+  height: 30px;
+}
+
+.blog-card {
+    padding-top: 20px;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
