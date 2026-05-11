@@ -243,6 +243,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .article {
         padding-bottom: 20px !important;
         word-break: break-word !important;
+        padding-top: 20px;
     }
     .published { width: 100% !important; margin-left: 0 !important; }
 
@@ -263,7 +264,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .heading .small { font-size: 24px !important; }
 
     .published {
-  margin: 20px 0 40px;
+  margin: 20px 0 35px;
   padding: 0 10px;
   text-transform: capitalize;
   font-style: italic;
