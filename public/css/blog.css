@@ -224,17 +224,16 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .heading .small { font-size: 24px !important; }
 
     .published {
-  margin: 10px 0 60px;
+  margin: 20px 0 60px;
   padding: 0 10px;
   text-transform: capitalize;
   font-style: italic;
   color: rgba(0, 0, 0, 0.5);
 }
-
     #edit-blog-btn {
   background: rgba(0, 0, 0, 0.2);
   display: none;
-  padding-bottom: 20px;
+  margin-bottom: 10px;
 }
 .comment-title {
     padding-top: 5px;

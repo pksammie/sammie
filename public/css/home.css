@@ -217,6 +217,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .blog-overview {
   margin: 10px 0 20px;
   line-height: 20px;
+  overflow-y: hidden;
 }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
@@ -229,6 +230,5 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 80px;
-  overflow-y: hidden;
 }
 }
