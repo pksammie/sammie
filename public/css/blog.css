@@ -191,7 +191,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .blog, .article, .comment-section, .blogs-section {
         width: 100% !important;
         margin: 0 !important;
-        padding: 0 20px !important;
+        padding: 0 25px !important;
     }
     
     .title { 
@@ -201,6 +201,10 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
         margin-left: 0 !important;
     }
 
+    .article {
+        padding-bottom: 10px;
+        word-break: break-all;
+    }
     .published { width: 100% !important; margin-left: 0 !important; }
 
     /* Fixes the Grid on the homepage */
@@ -209,6 +213,28 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
         grid-gap: 40px !important;
     }
 
+    .blog-overview {
+  margin: 10px 0 20px;
+  line-height: 10px;
+}
+
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
+
+    #edit-blog-btn {
+  background: rgba(0, 0, 0, 0.2);
+  display: none;
+  padding-bottom: 10px;
+}
+.comment-title {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+.sub-heading {
+  padding: 0 5vw;
+  color: #2d2d2d;
+  font-weight: 500;
+  font-size: 30px;
+  margin-top: 80px;
+}
 }

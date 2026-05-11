@@ -161,7 +161,7 @@ body {
 }
 .blog-overview {
   margin: 10px 0 20px;
-  line-height: 30px;
+  line-height: 20px;
 }
 .btn.dark {
   background: #1b1b1b;
@@ -193,7 +193,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .blog, .article, .comment-section, .blogs-section {
         width: 100% !important;
         margin: 0 !important;
-        padding: 0 20px !important;
+        padding: 0 20px !important;        
     }
     
     .title { 
@@ -201,6 +201,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
         font-size: 28px !important; 
         line-height: 1.2 !important; 
         margin-left: 0 !important;
+        padding-top: 15px !important;
     }
 
     .published { width: 100% !important; margin-left: 0 !important; }
@@ -210,6 +211,11 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
         grid-template-columns: 1fr !important;
         grid-gap: 40px !important;
     }
+    
+    .blog-overview {
+  margin: 10px 0 20px;
+  line-height: 10px;
+}
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
