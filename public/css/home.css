@@ -222,10 +222,10 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 
 /* 3. Single Media Query to handle all Phones/Tablets */
 @media (max-width: 768px) {
-    .menu-button { display: flex !important; align-items: center; } /* ENSURES MENU STAYS VISIBLE */
-    .link-item:not(.menu-button) { display: none !important; } /* Hides desktop links */
+    .menu-button { display: flex !important; align-items: center; cursor: pointer; } /* ENSURES MENU STAYS VISIBLE */
+    .links-container .link-item:not(.menu-button) { display: none !important; } /* Hides desktop links */
     
-    .navbar { padding: 0 20px; width: 100%; }
+    .navbar { padding: 0 20px; width: 100%; height: 70px; }
     
     .blog, .article, .comment-section, .blogs-section {
         width: 100% !important;
