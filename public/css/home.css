@@ -223,9 +223,19 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 /* 3. Single Media Query to handle all Phones/Tablets */
 @media (max-width: 768px) {
     .menu-button { display: flex !important; align-items: center; cursor: pointer; } /* ENSURES MENU STAYS VISIBLE */
-    .links-container .link-item:not(.menu-button) { display: none !important; } /* Hides desktop links */
+    .navbar .links-container .link-item:not(.menu-button) { display: none !important; visibility: hidden !important; width: 0 !important; height: 0 !important; overflow: hidden !important; } /* Hides desktop links */
     
     .navbar { padding: 0 20px; width: 100%; height: 70px; }
+    
+    .navbar .links-container .menu-button {
+        display: flex !important;
+        visibility: visible !important;
+    }
+
+    /* 3. Reset the container width */
+    .links-container {
+        width: auto !important;
+    }
     
     .blog, .article, .comment-section, .blogs-section {
         width: 100% !important;
