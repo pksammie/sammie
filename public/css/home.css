@@ -75,8 +75,10 @@ body {
 
 .responsive-side-bar svg {
     cursor: pointer;
-    margin-bottom: 20px;
-    padding-left: 10px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 .links-item:hover {
@@ -99,10 +101,12 @@ body {
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
 }
 
-.links-item
-
 .menu-button {
   display: none;
+}
+
+.menu-button svg {
+  padding-right: 5px;
 }
 
 .header {
