@@ -91,13 +91,23 @@ body {
     right: 0;
     height: 100vh;
     width: 250px;
-    z-index: 999;
-    background-color: white; /* Or your theme color */
+    z-index: 1001;
+    background-color: rgba(255, 255, 255, 0.384); /* Or your theme color */
     display: none; /* Hidden by default */
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.responsive-side-bar li:first-child {
+    list-style: none;
+    margin-bottom: 40px; /* Pushes the links further down from the X */
+    cursor: pointer;
+    align-self: flex-end; /* Moves 'X' to the right side of sidebar */
+}
+
+.responsive-side-bar .links-item {
+    padding-left: 10px;
 }
 
 .menu-button {
@@ -208,9 +218,15 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     margin-left: 0 !important;
 }
 
+.menu-button svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
 /* 3. Single Media Query to handle all Phones/Tablets */
 @media (max-width: 768px) {
-    .menu-button { display: block !important; } /* ENSURES MENU STAYS VISIBLE */
+    .menu-button { display: flex !important; align-items: center; } /* ENSURES MENU STAYS VISIBLE */
     .link-item:not(.menu-button) { display: none; } /* Hides desktop links */
     
     .navbar { padding: 0 20px; width: 100%; }
