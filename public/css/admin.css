@@ -13,3 +13,11 @@
 .admin-container {
     margin-top: 100px;
 }
+.menu-button {
+    display: flex !important;
+    z-index: 1001;
+}
+
+.menu-button svg path {
+    stroke: #000 !important; /* Forces the icon to be black */
+}

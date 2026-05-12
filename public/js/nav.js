@@ -42,7 +42,7 @@ function showSidebar() {
     const alertBar = document.getElementById("global-alert");
     
     if (sidebar) {
-        // Safety check for pages where alertBar might be missing
+        // If alertBar exists AND is visible, push sidebar down. Otherwise, top = 0.
         if (alertBar && window.getComputedStyle(alertBar).display !== "none") {
             let alertHeight = alertBar.offsetHeight;
             sidebar.style.top = alertHeight + "px";
@@ -51,7 +51,9 @@ function showSidebar() {
             sidebar.style.top = "0";
             sidebar.style.height = "100vh";
         }
-        sidebar.style.display = "flex";
+        
+        // Use inline style to ensure it overrides any CSS hidden states
+        sidebar.setAttribute('style', sidebar.getAttribute('style') + 'display: flex !important;');
     }
 }
 

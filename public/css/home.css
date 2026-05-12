@@ -99,7 +99,7 @@ body {
     z-index: 3000;
     background-color: white; /* Or your theme color */
     display: none; /* Hidden by default */
-    flex-direction: column;
+    flex-direction: column !important;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -223,7 +223,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
 /* 3. Single Media Query to handle all Phones/Tablets */
 @media (max-width: 768px) {
     .menu-button { display: flex !important; align-items: center; } /* ENSURES MENU STAYS VISIBLE */
-    .link-item:not(.menu-button) { display: none; } /* Hides desktop links */
+    .link-item:not(.menu-button) { display: none !important; } /* Hides desktop links */
     
     .navbar { padding: 0 20px; width: 100%; }
     
@@ -263,14 +263,6 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
 
-    .blogs-section {
-  word-break: break-word;
-  width: 100%;
-  padding: 70px 5vw;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 80px;
-}
 .admin-container, .dashboard-container, .blogs-section {
     padding-top: 100px !important; /* Pushes content below the 80px navbar */
 }
