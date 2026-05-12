@@ -21,3 +21,44 @@
 .menu-button svg path {
     stroke: #000 !important; /* Forces the icon to be black */
 }
+
+@media (max-width: 768px) {
+    /* 1. Make the container take full width */
+    .admin-container {
+        width: 100% !important;
+        padding: 10px !important;
+        margin-top: 20px !important;
+    }
+
+    /* 2. Adjust cards to not have huge padding */
+    .admin-card {
+        padding: 15px !important;
+        width: 100% !important;
+        box-shadow: none; /* Optional: cleaner look on mobile */
+        border: 1px solid #eee;
+    }
+
+    /* 3. FIX: Stack user emails and buttons vertically */
+    .user-item {
+        flex-direction: column; /* Stacks the email and delete button */
+        align-items: flex-start !important;
+        gap: 10px;
+        padding: 15px 5px;
+    }
+
+    /* 4. Make buttons and textareas full width for easy tapping */
+    .admin-card button, 
+    #alert-text,
+    .user-item button {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    
+    /* 5. Shrink the main title so it doesn't wrap weirdly */
+    .admin-container h1 {
+        font-size: 24px !important;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+}
+
