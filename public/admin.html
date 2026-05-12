@@ -75,6 +75,23 @@
     }
 });
 
+function showSidebar() {
+    const sidebar = document.querySelector(".responsive-side-bar");
+    const alertBar = document.getElementById("global-alert");
+    
+    // Check if alert is visible
+    if (window.getComputedStyle(alertBar).display !== "none") {
+        // Push sidebar down by the height of the alert
+        sidebar.style.top = alertBar.offsetHeight + "px";
+        sidebar.style.height = `calc(100vh - ${alertBar.offsetHeight}px)`;
+    } else {
+        sidebar.style.top = "0";
+        sidebar.style.height = "100vh";
+    }
+    
+    sidebar.style.display = "flex";
+}
+
 // Use the window object to make sure HTML buttons can always find these
 window.updateAlert = () => {
     const text = document.getElementById('alert-text').value;
