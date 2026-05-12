@@ -28,9 +28,12 @@ auth.onAuthStateChanged((user) => {
 
     // FIX: Add links to sidebar WITHOUT deleting the 'X' button
     if (ur) {
-        let sidebarLinks = links.replace(/link-item/g, 'links-item');
-        ur.insertAdjacentHTML('beforeend', sidebarLinks);
-    }
+    let sidebarLinks = links.replace(/link-item/g, 'links-item');
+    // Remove any old dynamic links first
+    ur.querySelectorAll('.dynamic-auth-link').forEach(el => el.remove());
+    ur.insertAdjacentHTML('beforeend', sidebarLinks);
+}
+
 });
 // ... existing auth.onAuthStateChanged code ...
 

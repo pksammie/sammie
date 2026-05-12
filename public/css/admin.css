@@ -3,3 +3,13 @@
 #alert-text { width: 100%; height: 100px; padding: 15px; border: 1px solid #eee; border-radius: 5px; margin-bottom: 20px; font-size: 1rem; }
 .user-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; }
 .btn-sm.danger { background: #ff4d4d; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+/* Ensure sidebar is always on top of admin cards */
+.responsive-side-bar {
+    z-index: 9999 !important;
+    display: none; 
+}
+
+/* Push admin content down so it doesn't hide under the sticky navbar */
+.admin-container {
+    margin-top: 100px;
+}
