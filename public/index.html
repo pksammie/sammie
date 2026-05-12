@@ -62,24 +62,5 @@
     <script src="/js/firebase.js"></script>
     <script src="/js/nav.js"></script>
     <script src="/js/home.js"></script>
-
-    <script>
-      function showSidebar() {
-    const sidebar = document.querySelector(".responsive-side-bar");
-    const alertBar = document.getElementById("global-alert");
-    
-    // Check if alert is visible
-    if (window.getComputedStyle(alertBar).display !== "none") {
-        // Push sidebar down by the height of the alert
-        sidebar.style.top = alertBar.offsetHeight + "px";
-        sidebar.style.height = `calc(100vh - ${alertBar.offsetHeight}px)`;
-    } else {
-        sidebar.style.top = "0";
-        sidebar.style.height = "100vh";
-    }
-    
-    sidebar.style.display = "flex";
-}
-    </script>
   </body>
 </html>

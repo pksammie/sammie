@@ -32,3 +32,29 @@ auth.onAuthStateChanged((user) => {
         ur.insertAdjacentHTML('beforeend', sidebarLinks);
     }
 });
+// ... existing auth.onAuthStateChanged code ...
+
+function showSidebar() {
+    const sidebar = document.querySelector(".responsive-side-bar");
+    const alertBar = document.getElementById("global-alert");
+    
+    if (sidebar) {
+        // Safety check for pages where alertBar might be missing
+        if (alertBar && window.getComputedStyle(alertBar).display !== "none") {
+            let alertHeight = alertBar.offsetHeight;
+            sidebar.style.top = alertHeight + "px";
+            sidebar.style.height = `calc(100vh - ${alertHeight}px)`;
+        } else {
+            sidebar.style.top = "0";
+            sidebar.style.height = "100vh";
+        }
+        sidebar.style.display = "flex";
+    }
+}
+
+function hideSidebar() {
+    const sidebar = document.querySelector(".responsive-side-bar");
+    if (sidebar) {
+        sidebar.style.display = "none";
+    }
+}
