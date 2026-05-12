@@ -268,6 +268,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   text-transform: capitalize;
   font-style: italic;
   color: rgba(0, 0, 0, 0.5);
+  font-size: 20px;
 }
     #edit-blog-btn {
   background: rgba(0, 0, 0, 0.2);

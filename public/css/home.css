@@ -89,14 +89,15 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    width: 280px;
     height: 100vh;
-    background: #fff;
-    z-index: 2000;
-    display: none; /* Controlled by showSidebar() */
+    width: 250px;
+    z-index: 999;
+    background-color: white; /* Or your theme color */
+    display: none; /* Hidden by default */
     flex-direction: column;
-    padding: 50px 30px;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    align-items: flex-start;
+    justify-content: flex-start;
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .menu-button {
