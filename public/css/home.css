@@ -263,7 +263,7 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
   margin: 10px 0 20px;
   line-height: 20px;
   text-overflow: ellipsis;
-  height: 30px;
+  height: 10px;
 }
 
 .blog-card {
