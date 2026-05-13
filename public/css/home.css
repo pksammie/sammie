@@ -190,10 +190,14 @@ body {
   margin-bottom: 10px;
 }
 .blog-overview {
-  margin: 10px 0 20px;
-  line-height: 30px;
-  overflow-y: 30px;
-}
+        margin: 10px 0 20px;
+        line-height: 1.5; /* Better spacing for readability */
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* Shows exactly 2 lines then adds '...' */
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+        height: auto; /* Remove the fixed 10px height, let line-clamp handle it */
+    }
 .btn.dark {
   background: #1b1b1b;
   color: #fff;
