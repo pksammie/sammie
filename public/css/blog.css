@@ -253,11 +253,14 @@ html, body { width: 100%; overflow-x: hidden; position: relative; margin: 0; pad
     }
 
     .blog-overview {
-  margin: 10px 0 20px;
-  line-height: 20px;
-  overflow: hidden;
-  height: 30px;
-}
+        margin: 10px 0 20px;
+        line-height: 1.5; /* Better spacing for readability */
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Shows exactly 2 lines then adds '...' */
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+        height: auto; /* Remove the fixed 10px height, let line-clamp handle it */
+    }
 
     .heading { font-size: 45px !important; line-height: 1 !important; }
     .heading .small { font-size: 24px !important; }
