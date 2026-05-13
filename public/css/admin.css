@@ -22,6 +22,35 @@
     stroke: #000 !important; /* Forces the icon to be black */
 }
 
+.admin-card .btn {
+    margin-right: 10px; /* Space for desktop */
+    margin-bottom: 10px; /* Space for mobile stacking */
+}
+
+/* Fix for long names/emails in the user list */
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    overflow: hidden; /* Contains everything */
+}
+
+.user-item span {
+    white-space: nowrap;      /* Keeps text on one line */
+    overflow: hidden;         /* Hides the extra text */
+    text-overflow: ellipsis;  /* Adds the '...' at the end */
+    max-width: 70%;           /* Leave space for the button */
+    padding-right: 10px;
+}
+
+/* Safety for the container */
+#user-list {
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal swipe if needed */
+}
+
+
 @media (max-width: 768px) {
     /* 1. Make the container take full width */
     .admin-container {
@@ -36,6 +65,11 @@
         width: 100% !important;
         box-shadow: none; /* Optional: cleaner look on mobile */
         border: 1px solid #eee;
+    }
+
+    .admin-card .btn {
+        width: 100%; /* Make them full width on mobile */
+        margin-right: 0;
     }
 
     /* 3. FIX: Stack user emails and buttons vertically */
